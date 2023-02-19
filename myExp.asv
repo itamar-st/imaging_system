@@ -36,12 +36,9 @@ function vr = initializationCodeFun(vr)
          dataFromDAQ = event.Data;
     end
     % define a temporary log file to be deleted at the end of the experiment
-    set(vr.ai,'loggingmode','Disk');
-    vr.numberOfTrials = 0;
-    vr.currRoundNum = 0;
-    tempname = today('datetime')
-    vr.tempfile = [tempname '.log'];
-    set(vr.ai,'logfilename',vr.tempfile);
+     set(vr.ai,'loggingmode','Disk');
+     vr.tempfile = [tempname '.log'];
+     set(vr.ai,'logfilename',vr.tempfile);
     % start acquisition from the analog input object
 vr.ai.IsContinuous = true;
 startBackground(vr.ai);
