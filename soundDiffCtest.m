@@ -1,4 +1,4 @@
-function vr = soundDiffC(vr, requiredVelocity,desiredFreq)
+function vr = soundDiffCtest(vr, requiredVelocity,desiredFreq)
 %velocity1 has to be changed back to vr.velocity(2)
 
 %CALCVELOCITY Summary of this function goes here

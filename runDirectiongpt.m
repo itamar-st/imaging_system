@@ -2,7 +2,7 @@ function x = runDirectiongpt(data)
     %RUNDIRECTIONGPT Summary of this function goes here
     %   Detailed explanation goes here
     % Rotary encoder direction detection using MATLAB
-    data
+    data;
     % Define input channels
     A = data(:,1); % Sample A channel signal
     B = data(:,2); % Sample B channel signal

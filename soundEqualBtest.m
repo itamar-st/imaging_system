@@ -1,4 +1,4 @@
-function vr = soundDiffC(vr, requiredVelocity,desiredFreq)
+function vr = soundEqualBtest(vr, requiredVelocity,desiredFreq)
 %velocity1 has to be changed back to vr.velocity(2)
 
 %CALCVELOCITY Summary of this function goes here
@@ -34,15 +34,15 @@ function vr = soundDiffC(vr, requiredVelocity,desiredFreq)
     %borderL    
     else
         if (velocity1 > borderL - scale)
-            generateSound(vr, desiredFreq-200);
+            generateSound(vr, desiredFreq+200);
         elseif (velocity1> borderL - 2*scale)
-            generateSound(vr, desiredFreq-400);
+            generateSound(vr, desiredFreq+400);
         elseif (velocity1> borderL - 3*scale)
-            generateSound(vr, desiredFreq-600);
+            generateSound(vr, desiredFreq+600);
         elseif (velocity1> borderL - 4*scale)
-            generateSound(vr, desiredFreq-800);
+            generateSound(vr, desiredFreq+800);
         elseif (velocity1> borderL - 5*scale)
-            generateSound(vr, desiredFreq-1000);
+            generateSound(vr, desiredFreq+1000);
         else
             disp("out of range borderL soundEqualBtest");
         end
