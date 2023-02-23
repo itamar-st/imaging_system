@@ -1,12 +1,21 @@
 function logData()
     % open the binary file
-    fid = fopen('virmenLog.dat');
+    fid1 = fopen('A-B_record.dat');
+    fid2 = fopen('virmenLog.dat');
     % read all data from the file into a 5-row matrix
-    data = fread(fid,[2 inf],'double');
+    velocityData = fread(fid2,[2 inf],'double');
+    A_B_ChannelsData = fread(fid1,[3 inf],'double');
     % close the file
-    fclose(fid);
-    % plot the 2D position information
-    plot(data(1,:),data(2,:));
+    fclose(fid1);
+    fclose(fid2);
     
+    % plot the 2D position information
+    
+    plot(velocityData(1,:),velocityData(2,:));
+    title("velocityData");
+    plot(A_B_ChannelsData(1,:),A_B_ChannelsData(2,:));
+    title("A B ChannelsData");
+
 end
 
+    
