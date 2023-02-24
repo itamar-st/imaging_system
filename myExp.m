@@ -20,6 +20,8 @@ function vr = initializationCodeFun(vr)
     global dataFromDAQ;
     global sounds;
     global shiftCounter;
+    global timeUntilCoolOffRoom;
+    timeUntilCoolOffRoom = 0;
     shiftCounter = 0;
     sounds = double.empty;
     vr = playerInit(vr,1500);
@@ -27,6 +29,8 @@ function vr = initializationCodeFun(vr)
     vr.soundProfile = 0;
     vr = miniGUI(vr);
     vr.currentWorld = 1;
+    vr.t1 = 0;
+    vr.t2 = 0;
     % reset DAQ in case it's still in use by a previous MATLAB program
     daqreset;
     % connect to the DAQ card dev1; store the input object handle in vr for use by ViRMEn
@@ -70,6 +74,7 @@ end
 % --- RUNTIME code: executes on every iteration of the ViRMEn engine.
 function vr = runtimeCodeFun(vr)
     global dataFromDAQ;
+    global timeUntilCoolOffRoom;
     
     %sound
     switch vr.soundProfile
@@ -104,31 +109,52 @@ function vr = runtimeCodeFun(vr)
     %vr.counter = vr.counter + 1;
     
     %checking position for reward
-        function update_audio(obj, event)
-
-        % Generate audio data based on the input values
-        t = linspace(0, 1, 44100);
-        audio_data = sin(2*pi*freq*t)';
-
-        % Send the audio data to the audio player object
-        player.queue(audio_data);
-        play(player);
+    function coolOfRoom(~,~)
+        timeUntilCoolOffRoom = 1;
+    end
+    function backToStart(~,~)
+        timeUntilCoolOffRoom = 2;
     end
 
     % Create the timer object
-    t = timer('TimerFcn', @update_audio, 'Period', 0.1, 'ExecutionMode', 'fixedSpacing');
     % Start the timer object
-    start(t);
     if (vr.position(2)>=125)
-        disp("position runtime "+ vr.position(2))
-        vr.position(2) = 125;
+
+        if (vr.t1 == 0)
+            %vr.worlds{vr.currentWorld}.surface.visible(:) = false;
+            vr.t1 = timer('TimerFcn', @coolOfRoom, 'ExecutionMode', 'singleShot', 'StartDelay', 2);
+            vr.t2 = timer('TimerFcn', @backToStart, 'ExecutionMode', 'singleShot', 'StartDelay', 2);
+            
+            start(vr.t1);
+        end
+        %check if the time to switch rooms has arrived
+        if (timeUntilCoolOffRoom ~= 0)
+            %check which room
+            if (timeUntilCoolOffRoom == 1)
+                vr.currentWorld = 2;
+                start(vr.t2);
+            else
+                %go back to init position
+                vr.currentWorld = 1;
+                vr.position(2) = -100;
+                %reset timers
+                vr.t1 = 0;
+                vr.t2 = 0;
+            end
+            timeUntilCoolOffRoom = 0;
+
+            
+            %vr.currentWorld = mod(vr.currentWorld,2)+1;
+            %vr.position(2) = 0;
+        end
     end
 end
 
 % --- TERMINATION code: executes after the ViRMEn engine stops.
 function vr = terminationCodeFun(vr)
     % stop the analog input object
-    
+    delete(vr.t1);
+    delete(vr.t2);    
     stop(vr.ai);
     % close the file
     fclose(vr.fid1);
