@@ -25,10 +25,10 @@ function vr = initializationCodeFun(vr)
     timeUntilCoolOffRoom = 0;
     shiftCounter = 0;
     sounds = double.empty;
-    
+    vr.checkIfSoundIsPlaying = 0;
     vr.Soundflag = 0;
     vr.switchFreqFlag = 0;
-    
+    vr.player=0;
     vr = playerInit(vr,1500);
     vr.counter = 0;
     vr.counter1 = 1;
@@ -47,34 +47,38 @@ function vr = initializationCodeFun(vr)
     daqreset;
     % connect to the DAQ card dev1; store the input object handle in vr for use by ViRMEn
     vr.ai = daq.createSession('ni');
+    vr.ai.IsContinuous = true;
+    
+    vr.ao = daq.createSession('ni');
+    vr.ao.IsContinuous = true;
     
     addAnalogInputChannel(vr.ai,'Dev1',[8,9,11],'Voltage');
-    addAnalogOutputChannel(vr.ai,'Dev1',[0,1],'Voltage');
+    addAnalogOutputChannel(vr.ao,'Dev1',[0,1],'Voltage');
     % define the sampling rate to 1kHz and set the duration to be unlimited
     vr.ai.Rate = vr.rate;
+    vr.ao.Rate = vr.rate;
 
             
-    initialData = zeros(vr.rate, 2);
-    vr.ai.queueOutputData(initialData);
+    initialData = zeros(vr.rate/10, 2);
+    vr.ao.queueOutputData(initialData);
 
     % set the buffering window to be 8 ms long - shorter than a single ViRMEn refresh cycle
     vr.ai.NotifyWhenDataAvailableExceeds = vr.rate / 100;
-    vr.ai.NotifyWhenScansQueuedBelow = vr.rate / 100;
+    vr.ao.NotifyWhenScansQueuedBelow = vr.rate/10;
 
     vr.timeOfSample = vr.ai.Rate./vr.ai.NotifyWhenDataAvailableExceeds;
     vr.timePerSample = vr.ai.NotifyWhenDataAvailableExceeds./vr.ai.Rate;
     %radius of 9.525 cm for the wheel.
     vr.lh1 = addlistener(vr.ai,'DataAvailable',@getData);
+    vr.lh2 = addlistener(vr.ao,'DataRequired',@sendData);
     function getData(src,event)
-        dataFromDAQ = [event.Data event.TimeStamps]
-        src.queueOutputData(zeros(vr.rate/100, 2));
+        dataFromDAQ = [event.Data event.TimeStamps];
     end
 
-    %vr.lh2 = addlistener(vr.ai,'DataRequired',@sendData);
-    %function sendData(src,event)
-    %    src.queueOutputData(zeros(vr.rate/100, 2));
-    %    disp("aaaaaaaaaaaa")
-    %end
+    function sendData(src,event)
+        zeros_columns = zeros(vr.rate / 10, 2);
+        src.queueOutputData(zeros_columns);
+    end
 
     % open or create binary file for writing and store its file ID in vr
     timestamp1 = datestr(clock);    
@@ -83,9 +87,11 @@ function vr = initializationCodeFun(vr)
     vr.nameOfLogFileA_B = "C:\Users\user\Desktop\imaging_system\log\" + erase(timestamp1+"A-B_record.dat",":");
     vr.fid2 = fopen(vr.nameOfLogFileA_B,'w');
     
+    vr.aaaa =tic;
+    vr.aaaaP = 0;
     % start acquisition from the analog input object
-    vr.ai.IsContinuous = true;
     startBackground(vr.ai);
+    startBackground(vr.ao);
 
 
 end
@@ -98,22 +104,26 @@ function vr = runtimeCodeFun(vr)
     global dataFromDAQ;
     global timeUntilCoolOffRoom;
 
-    %b = tic
     %test for performence
-    %    zeros_column = zeros(200, 1);
-    %    ones_column = ones(200, 1);
-    %    result_matrix = horzcat(ones_column, zeros_column);
-    %    result_matrix;
-    %    queueOutputData(vr.ai,result_matrix);
+%        zeros_column = zeros(vr.rate / 100, 1);
+%        ones_column = ones(vr.rate / 100, 1);
+%        result_matrix = horzcat(zeros_column, zeros_column);
+%        result_matrix;
+%        queueOutputData(vr.ai,result_matrix);
         %channel 11
-    %    Ccol = dataFromDAQ(:,3);
-    %if (Ccol(1) > 0.9 && Ccol(1) < 1.1)
-     %   zeros_column = zeros(200, 1);
-      %  ones_column = ones(200, 1);
-      %  result_matrix = horzcat(ones_column, ones_column);
-      %  result_matrix;
-      %  queueOutputData(vr.ai,result_matrix);
-    %end
+        
+%        Cco4 = dataFromDAQ(:,4);
+%        a = toc(vr.aaaa)
+%     if (a > vr.aaaaP+5)
+%         vr.aaaaP = a;
+%         result_matrix = horzcat(ones_column*4, ones_column*4);
+%         
+%         queueOutputData(vr.ai,result_matrix);
+        
+%         result_matrix = horzcat(zeros_column*4, zeros_column*4);
+%         result_matrix
+%         queueOutputData(vr.ai,result_matrix);
+%     end
     
     %sound
     switch vr.soundProfile
@@ -153,7 +163,6 @@ function vr = runtimeCodeFun(vr)
     % Create the timer object
     % Start the timer object
     if (vr.position(2)>=125)
-
         if (isequal(get(vr.t1, 'Running'), 'off'))
             start(vr.t1);
         end
@@ -164,6 +173,7 @@ function vr = runtimeCodeFun(vr)
             if (timeUntilCoolOffRoom == 1)
                 vr.currentWorld = 2;
                     start(vr.t2);
+                    vr = giveReward(vr);
             else
                 %go back to init position
                 vr.currentWorld = vr.chosenWorld;
