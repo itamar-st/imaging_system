@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sound Player</title>
+    <script>
+        var audio1 = new Audio('drums.mp3');
+        var audio2 = new Audio('jet.wav');
+        
+        function playSound1() {
+            audio2.pause();
+            audio2.currentTime = 0;
+            audio1.play();
+        }
+        
+        function playSound2() {
+            audio1.pause();
+            audio1.currentTime = 0;
+            audio2.play();
+        }
+        
+        function stopSounds() {
+            audio1.pause();
+            audio1.currentTime = 0;
+            audio2.pause();
+            audio2.currentTime = 0;
+        }
+    </script>
+</head>
+<body>
+    <h1>Sound Player</h1>
+    
+    <button onclick="playSound1()">Play Sound 1</button>
+    <button onclick="playSound2()">Play Sound 2</button>
+    <button onclick="stopSounds()">Stop</button>
+</body>
+</html>
