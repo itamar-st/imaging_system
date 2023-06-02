@@ -1,4 +1,4 @@
-function [] = untitled()
+function [] = client()
 url = 'http://localhost:3000/playSound1';  % URL of the server
 
 try
