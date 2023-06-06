@@ -41,7 +41,6 @@ function vr = soundEqualB(vr, requiredVelocity, allowedDeviation, desiredFreq)
         elseif (velocity1> borderL - 5*scale)
             generateSound(vr, desiredFreq+1000);
         else
-            vr = stopSound(vr);
             disp("out of range borderL soundEqualBtest");
         end
         

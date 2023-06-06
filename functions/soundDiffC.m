@@ -1,33 +1,13 @@
 function vr = soundDiffC(vr, requiredVelocity,allowedDeviation, desiredFreq)
 %velocity1 has to be changed back to vr.velocity(2)
     scale = allowedDeviation;% was 50 in tests
-    %velocity1 = vr.velocity(2);
-       %%%%%%%%%%%%   test
-    %if (vr.switchFreqFlag == 0)
-    %    if (vr.Soundflag < 10)
-    %        velocity1 = 100;
-    %        vr.Soundflag = vr.Soundflag + 1;
-    %        vr.Soundflag
-    %    else
-    %        vr.switchFreqFlag = 1;
-    %        velocity1 = 5;
-    %        vr.Soundflag = 0;
-    %    end
-    %else
-    %    if (vr.Soundflag < 10)
-    %        velocity1 = 30;
-    %        vr.Soundflag = vr.Soundflag + 1;
-    %    else
-    %        vr.switchFreqFlag = 0;
-    %        velocity1 = 30;
-    %        vr.Soundflag = 0;
-    %    end
-    %end
-    %%%%%%%%%%%%%%%%%%%%
     borderR = requiredVelocity + scale;
     borderL = requiredVelocity - scale;
-    
-    if ((velocity1 <= requiredVelocity + scale) && (velocity1 >= requiredVelocity - scale))
+    velocity1 = vr.velocity(2);
+    if (vr.position(2)>=125) %if we reach to the end of the hallway
+        vr = stopSound(vr);
+        
+    elseif ((velocity1 <= requiredVelocity + scale) && (velocity1 >= requiredVelocity - scale))
             generateSound(vr,desiredFreq);
             
     %borderR
