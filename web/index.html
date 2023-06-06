@@ -3,34 +3,63 @@
 <head>
     <title>Sound Player</title>
     <script>
-        var audio1 = new Audio('drums.mp3');
-        var audio2 = new Audio('jet.mp3');
+        var audioFiles = [
+            'sound1000.wav',
+            'sound1200.wav',
+            'sound1400.wav',
+            'sound1600.wav',
+            'sound1800.wav',
+            'sound2000.wav',
+            'sound2200.wav',
+            'sound2400.wav',
+	    'sound2600.wav',
+            'sound2800.wav',
+	    'sound3000.wav',
+	    'sound3200.wav',
+	    'sound3400.wav',
+	    'sound5000.wav'
+        ];
         
-        function playSound1() {
-            audio2.pause();
-            audio2.currentTime = 0;
-            audio1.play();
+        var audioElements = [];
+        for (var i = 0; i < audioFiles.length; i++) {
+            audioElements.push(new Audio(audioFiles[i]));
         }
         
-        function playSound2() {
-            audio1.pause();
-            audio1.currentTime = 0;
-            audio2.play();
+        function playSound(index) {
+            for (var i = 0; i < audioElements.length; i++) {
+                if (i !== index) {
+                    audioElements[i].pause();
+                    audioElements[i].currentTime = 0;
+                }
+            }
+            audioElements[index].play();
         }
         
         function stopSounds() {
-            audio1.pause();
-            audio1.currentTime = 0;
-            audio2.pause();
-            audio2.currentTime = 0;
+            for (var i = 0; i < audioElements.length; i++) {
+                audioElements[i].pause();
+                audioElements[i].currentTime = 0;
+            }
         }
     </script>
 </head>
 <body>
     <h1>Sound Player</h1>
     
-    <button onclick="playSound1()">Play Sound 1</button>
-    <button onclick="playSound2()">Play Sound 2</button>
+    <button onclick="playSound(0)">Play Sound 1</button>
+    <button onclick="playSound(1)">Play Sound 2</button>
+    <button onclick="playSound(2)">Play Sound 3</button>
+    <button onclick="playSound(3)">Play Sound 4</button>
+    <button onclick="playSound(4)">Play Sound 5</button>
+    <button onclick="playSound(5)">Play Sound 6</button>
+    <button onclick="playSound(6)">Play Sound 7</button>
+    <button onclick="playSound(7)">Play Sound 8</button>
+    <button onclick="playSound(8)">Play Sound 9</button>
+    <button onclick="playSound(9)">Play Sound 10</button>
+    <button onclick="playSound(10)">Play Sound 11</button>
+    <button onclick="playSound(11)">Play Sound 12</button>
+    <button onclick="playSound(12)">Play Sound 13</button>
+    <button onclick="playSound(13)">Play Sound 14</button>    
     <button onclick="stopSounds()">Stop</button>
 </body>
 </html>
