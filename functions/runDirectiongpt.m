@@ -3,6 +3,12 @@ function x = runDirectiongpt(data)
     %   Detailed explanation goes here
     % Rotary encoder direction detection using MATLAB
     % Define input channels
+   
+    % if (isempty(data))
+    %    x = 0;
+    %    return;
+    %end   
+    
     A = data(:,1); % Sample A channel signal
     B = data(:,2); % Sample B channel signal
     % Initialize variables

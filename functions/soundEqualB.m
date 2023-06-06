@@ -1,17 +1,16 @@
-function vr = soundEqualB(vr, requiredVelocity,desiredFreq)
-%velocity1 has to be changed back to vr.velocity(2)
+function vr = soundEqualB(vr, requiredVelocity, allowedDeviation, desiredFreq)
 
-%CALCVELOCITY Summary of this function goes here
-%if ((requiredVelocity  <= 7) && (requiredVelocity  >= 3))   
-    scale = 50;
+    scale = allowedDeviation; %50 in tests
+    %return this line when finish testing
     velocity1 = vr.velocity(2);
-   
+     
     borderR = requiredVelocity + scale;
     borderL = requiredVelocity - scale;
-    
-    if ((velocity1 <= requiredVelocity + scale) && (velocity1 >= requiredVelocity - scale))
+    if (vr.position(2)>=125) %if we reach to the end of the hallway
+        vr = stopSound(vr);
+        
+    elseif ((velocity1 <= requiredVelocity + scale) && (velocity1 >= requiredVelocity - scale))
             generateSound(vr,desiredFreq);
-    %else
     
     %borderR
     elseif (velocity1 > borderR)
@@ -28,9 +27,7 @@ function vr = soundEqualB(vr, requiredVelocity,desiredFreq)
         else
             disp("out of range borderR soundEqualBtest");
         end    
-        
-        
-        
+                
     %borderL    
     else
         if (velocity1 > borderL - scale)
@@ -44,12 +41,12 @@ function vr = soundEqualB(vr, requiredVelocity,desiredFreq)
         elseif (velocity1> borderL - 5*scale)
             generateSound(vr, desiredFreq+1000);
         else
+            vr = stopSound(vr);
             disp("out of range borderL soundEqualBtest");
         end
         
-        
+      
     end
-    
     
 end
 

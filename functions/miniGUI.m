@@ -34,6 +34,7 @@ function vr = miniGUI(vr)
     uicontrol('Style', 'text', 'String', 'black room break:', 'Position', [70, 240, 150, 20]);
     sliderBlackroom = uicontrol('Style', 'slider', 'Position', [70, 220, 150, 20], 'Min', 0, 'Max', 100, 'Value', 2, 'SliderStep', [0.01 0.1], 'Callback', @sliderBlackRoomCallback);
     sliderValueBlackRoomText = uicontrol('Style', 'text', 'Position', [70, 200, 150, 20], 'String', 'Slider Value: 2');
+   
     function sliderBlackRoomCallback(source, event)
        selectedSliderBlackRoomValue = round(get(sliderBlackroom, 'Value'));
        %changes in gui
@@ -41,7 +42,32 @@ function vr = miniGUI(vr)
     end
     
  
+    %deviation
+     %create a slider control for black room break
+    uicontrol('Style', 'text', 'String', 'deviation from target sound:', 'Position', [70, 160, 150, 20]);
+    sliderDeviation = uicontrol('Style', 'slider', 'Position', [70, 140, 150, 20], 'Min', 0, 'Max', 100, 'Value', 15, 'SliderStep', [0.01 0.1], 'Callback', @sliderDeviationCallback);
+    sliderValueDeviationText = uicontrol('Style', 'text', 'Position', [70, 120, 150, 20], 'String', 'Slider Value: 15');
+   
+    function sliderDeviationCallback(source, event)
+       selectedSliderDevValue = round(get(sliderDeviation, 'Value'));
+       %changes in gui
+       set(sliderValueDeviationText, 'String', sprintf('Slider Value: %d', selectedSliderDevValue));
+    end
  
+
+    %target speed
+     %create a slider control for black room break
+    uicontrol('Style', 'text', 'String', 'target speed:', 'Position', [70, 80, 150, 20]);
+    sliderTargetSpeed = uicontrol('Style', 'slider', 'Position', [70, 60, 150, 20], 'Min', 0, 'Max', 100, 'Value', 30, 'SliderStep', [0.01 0.1], 'Callback', @sliderTargetSpeedCallback);
+    sliderValueTargetSpeedText = uicontrol('Style', 'text', 'Position', [70, 40, 150, 20], 'String', 'Slider Value: 30');
+   
+    function sliderTargetSpeedCallback(source, event)
+       selectedSliderTargetSpeedValue = round(get(sliderTargetSpeed, 'Value'));
+       %changes in gui
+       set(sliderValueTargetSpeedText, 'String', sprintf('Slider Value: %d', selectedSliderTargetSpeedValue));
+    end
+ 
+
     % Create a button to display the selected option from the dropdown list
     button = uicontrol('Style', 'pushbutton', 'String', 'Select', 'Position', [100, 10, 100, 30], 'Callback', @buttonCallback);
 
@@ -62,6 +88,13 @@ function vr = miniGUI(vr)
         
         %Black Room break;
         vr.blackRoomBreak = get(sliderBlackroom, 'Value');
+        
+        %deviation allowed
+        vr.allowedDeviation = get(sliderDeviation, 'Value');
+        
+        %target speed
+        vr.targetSpeed = get(sliderTargetSpeed, 'Value');
+        
         
         close(fig);
         

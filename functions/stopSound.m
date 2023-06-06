@@ -4,7 +4,7 @@ try
     options = weboptions('RequestMethod', 'get');
     webread(url, options);
     
-    disp('GET request sent successfully.');
+    disp('GET request sent successfully from stopSound.');
 
 catch ME
     disp(['Error: ' ME.message]);
