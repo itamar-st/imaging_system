@@ -17,22 +17,20 @@ end
 function vr = initializationCodeFun(vr)
     
     global dataFromDAQ;
-    global shiftCounter;
     global timeUntilCoolOffRoom;
     
     %vr.trackLength = eval(vr.exper.variables.trackLength)
     vr.exper.variables.x = '200';
     timeUntilCoolOffRoom = 0;
-    shiftCounter = 0;
     vr.counter = 0;
-    vr = miniGUI(vr);
+    vr = miniGUI(vr); % show the GUI for chosing the experiment preferences 
     vr.currentWorld = vr.chosenWorld; %show the world we chose in the GUI
     
-    vr = timerInit(vr);
+    vr = timerInit(vr); % start the timers for changing rooms
     
-    vr = createLogFiles(vr);
+    vr = createLogFiles(vr); % for logging the A-B voltage an velocity
 
-    vr = DAQInit(vr);
+    vr = DAQInit(vr); % data acquisition system
 end
 
 
@@ -52,9 +50,6 @@ function vr = runtimeCodeFun(vr)
         otherwise
             disp('ERROR myExp')
     end
-    
-    %log A-B voltage and calculated speed
-    vr = logData(vr);
     
     %checking position for reward
     if (vr.position(2)>=125)
