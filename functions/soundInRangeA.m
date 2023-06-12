@@ -5,7 +5,6 @@ function vr = soundInRangeA(vr, requiredVelocity, allowedDeviation, desiredFreq)
         vr = generateSound(vr,desiredFreq);
     else
         vr = stopSound(vr);
-        disp("stoppooooooooooooooooooooooopppppppppppppp")
     end
 end
 

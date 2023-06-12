@@ -1,21 +1,19 @@
 function vr = logData(vr)
-    % open the binary file
-    fid1 = fopen(vr.nameOfLogFileA_B);
-    fid2 = fopen(vr.nameOfLogFileVel);
-    % read all data from the file into a 5-row matrix
-    velocityData = fread(fid2,[2 inf],'double');
-    A_B_ChannelsData = fread(fid1,[3 inf],'double');
-    % close the file
-    fclose(fid1);
-    fclose(fid2);
+    global dataFromDAQ;
+    % obtain the current timestamp
+    timestamp = clock;
     
-    % plot the 2D position information
+    % write timestamp and the x & y components of position and velocity to a file
+    % using floating-point precision   
+    fwrite(vr.fid1, [timestamp(6) vr.velocity(2)],'double');
     
-    plot(velocityData(1,:),velocityData(2,:));
-    title("velocityData");
-    %plot(A_B_ChannelsData(1,:),A_B_ChannelsData(2,:));
-    %title("A B ChannelsData");
+    r1 = 0:(vr.ai.NotifyWhenDataAvailableExceeds/2)-1;
+    %if (isempty(dataFromDAQ) == 0)
+    dataFromDAQAEven = dataFromDAQ(:,1);
+    dataFromDAQBEven = dataFromDAQ(:,2);
+    matrix = [r1+250*vr.counter ;dataFromDAQAEven(2:2:end).';dataFromDAQBEven(2:2:end).'] ;
+    fwrite(vr.fid2, matrix,'double');
+    vr.counter = vr.counter + 1;
 
 end
 
-    
