@@ -6,17 +6,27 @@ function vr = miniGUI(vr)
     dropdownSoundOptions = {'contenious sound', 'adjustable sound(same in both directions)', 'adjustable sound(asymetric in both directions)'};
     dropdownWorldOptions = {'World 1','World 2', 'World 3', 'World 4'}
     % Create a figure window and set its size and position
-    fig = figure('Position', [550, 250, 300, 500]);
+    fig = figure('Position', [550, 250, 300, 600]);
 
     % Create a dropdown list and set its position and options
-    
+    %how long to open the valve
+    uicontrol('Style', 'text', 'String', 'reward duration (ms):', 'Position', [70, 500, 150, 20]);    
+    % Create a slider control for leakport break
+    sliderValveDuration = uicontrol('Style', 'slider', 'Position', [70, 480, 150, 20], 'Min', 0, 'Max', 1000, 'Value', 100, 'SliderStep', [0.01 0.1], 'Callback', @sliderValveDurationCallback);
+    sliderValveDurationText = uicontrol('Style', 'text', 'Position', [70, 460, 150, 20], 'String', 'Slider Value: 100');
+
+    function sliderValveDurationCallback(source, event)
+       selectedSliderLeakportValue = round(get(sliderValveDuration, 'Value'));
+       %changes in gui
+       set(sliderValveDurationText, 'String', sprintf('Slider Value: %d', selectedSliderLeakportValue));
+    end
     %choose sound
     uicontrol('Style', 'text', 'String', 'Choose a sound option:', 'Position', [70, 430, 150, 20]);
     dropdownSound = uicontrol('Style', 'popupmenu', 'String', dropdownSoundOptions, 'Position', [70, 400, 150, 20]);
     
     %choose world
     uicontrol('Style', 'text', 'String', 'Choose a world:', 'Position', [70, 370, 150, 20]);
-    dropdownWorld = uicontrol('Style', 'popupmenu', 'String', dropdownWorldOptions, 'Position', [70, 350, 150, 20])
+    dropdownWorld = uicontrol('Style', 'popupmenu', 'String', dropdownWorldOptions, 'Position', [70, 350, 150, 20]);
     
     %how long in leak port room
     uicontrol('Style', 'text', 'String', 'leak port break:', 'Position', [70, 320, 150, 20]);    
@@ -95,7 +105,8 @@ function vr = miniGUI(vr)
         %target speed
         vr.targetSpeed = get(sliderTargetSpeed, 'Value');
         
-        
+        %reward duration
+        vr.rewardDuration = get(sliderValveDuration, 'Value');
         close(fig);
         
     end
