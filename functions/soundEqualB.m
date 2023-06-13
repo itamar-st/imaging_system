@@ -1,9 +1,10 @@
-function vr = soundEqualB(vr, requiredVelocity, allowedDeviation, desiredFreq)
+function vr = soundEqualB(vr, requiredVelocity, allowedDeviationInrange, DeviationBetweenSteps, desiredFreq)
 
-    scale = allowedDeviation; %50 in tests
+    scale = allowedDeviationInrange; %50 in tests
+    scaleOutRange = DeviationBetweenSteps;
     %return this line when finish testing
-    velocity1 = vr.velocity(2);
-     
+    velocity1 = vr.velocity(2)
+     disp("this is "+vr.DeviationBetweenSteps);
     borderR = requiredVelocity + scale;
     borderL = requiredVelocity - scale;
     if (vr.position(2)>=125) %if we reach to the end of the hallway
@@ -14,34 +15,34 @@ function vr = soundEqualB(vr, requiredVelocity, allowedDeviation, desiredFreq)
     
     %borderR
     elseif (velocity1 > borderR)
-        if (velocity1< borderR + scale)
+        if (velocity1< borderR + scaleOutRange)
             generateSound(vr, desiredFreq+200);
-        elseif (velocity1< borderR + 2*scale)
+        elseif (velocity1< borderR + 2*scaleOutRange)
             generateSound(vr, desiredFreq+400);
-        elseif (velocity1< borderR + 3*scale)
+        elseif (velocity1< borderR + 3*scaleOutRange)
             generateSound(vr, desiredFreq+600);
-        elseif (velocity1< borderR + 4*scale)
+        elseif (velocity1< borderR + 4*scaleOutRange)
             generateSound(vr, desiredFreq+800);
-        elseif (velocity1< borderR + 5*scale)
+        elseif (velocity1< borderR + 5*scaleOutRange)
             generateSound(vr, desiredFreq+1000);
         else
-            disp("out of range borderR soundEqualBtest");
+%             disp("out of range borderR soundEqualBtest");
         end    
                 
     %borderL    
     else
         if (velocity1 > borderL - scale)
             generateSound(vr, desiredFreq+200);
-        elseif (velocity1> borderL - 2*scale)
+        elseif (velocity1> borderL - 2*scaleOutRange)
             generateSound(vr, desiredFreq+400);
-        elseif (velocity1> borderL - 3*scale)
+        elseif (velocity1> borderL - 3*scaleOutRange)
             generateSound(vr, desiredFreq+600);
-        elseif (velocity1> borderL - 4*scale)
+        elseif (velocity1> borderL - 4*scaleOutRange)
             generateSound(vr, desiredFreq+800);
-        elseif (velocity1> borderL - 5*scale)
+        elseif (velocity1> borderL - 5*scaleOutRange)
             generateSound(vr, desiredFreq+1000);
         else
-            disp("out of range borderL soundEqualBtest");
+%             disp("out of range borderL soundEqualBtest");
         end
         
       
