@@ -1,11 +1,12 @@
 function vr = endOfTraceProcedure(vr)
     global timeUntilCoolOffRoom;
-    
+    global dataFromDAQ;
+
     %1 for switching to black room and 2 for jumping back to start
-    
-    % Create the timer object
-    % Start the timer object
+    timestampCol = dataFromDAQ(:,4);
     vr = stopSound(vr);
+    
+    % Start the timer object   
     if (isequal(get(vr.t1, 'Running'), 'off'))
         start(vr.t1);
     end
@@ -16,9 +17,11 @@ function vr = endOfTraceProcedure(vr)
         if (timeUntilCoolOffRoom == 1)
             vr.currentWorld = 2;
             start(vr.t2);
-               if(vr.timeOfRanningInRange/vr.timeOfTotalRun >= vr.precentageOfRunningInRange)
-                vr = giveReward(vr);
-               end
+
+           if(double(vr.timeOfRanningInRange)/double(vr.timeOfTotalRun) >= vr.precentageOfRunningInRange/100)
+            vr = giveReward(vr);
+%                 fwrite(vr.fid3, [timestampCol(1) velocity(2)],'double');
+           end
 
         else
             %go back to init position
