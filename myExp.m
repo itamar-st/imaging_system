@@ -31,7 +31,7 @@ function vr = initializationCodeFun(vr)
     %choose world, return line 27 if you want to control it via GUI and
     %comment lines 29-34
     %vr.currentWorld = vr.chosenWorld; %show the world we chose in the GUI
-    randomNumber = rand
+    randomNumber = rand;
     if (randomNumber > 0.5)
         vr.currentWorld = 1;
     else
@@ -62,6 +62,13 @@ function vr = runtimeCodeFun(vr)
         otherwise
             disp('ERROR selecting sound profile')
     end
+    
+    % count how much time it was on the target speed
+    if((vr.targetSpeed  <= vr.velocity(2) + vr.allowedDeviation) && ...
+            (vr.targetSpeed  >= vr.velocity(2) - vr.allowedDeviation))
+        vr.timeOfRanningInRange = vr.timeOfRanningInRange+vr.ai.NotifyWhenDataAvailableExceeds;
+    end
+    vr.timeOfTotalRun = vr.timeOfTotalRun + vr.ai.NotifyWhenDataAvailableExceeds;
     
     %checking position for reward
     if (vr.position(2)>=125)

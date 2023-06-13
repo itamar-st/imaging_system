@@ -5,8 +5,8 @@ function velocity = moveWithDAQ(vr)
      %   return
     %end
     counter = 0;
-    %direction = runDirectiongpt(dataFromDAQ);
-    direction = 1;
+    direction = runDirectiongpt(dataFromDAQ);
+%     direction = 1;
     Acol = dataFromDAQ(:,1);
     Bcol = dataFromDAQ(:,2);
     timestampCol = dataFromDAQ(:,4);
@@ -24,19 +24,13 @@ function velocity = moveWithDAQ(vr)
     %diff = data - lastDataFromDAQ;
     % 10000 = 100 for 10 ms to sec * 100 for cm to meter => velocity in m\s
     scaling = 10000;
-    velocity = [0 speed*scaling*direction 0 0]; 
+    velocity = [0 speed*scaling*direction 0 0]
 %     velocity = [0 20 0 0];
     %calculate distance- 1024 slots / 360 deg = 2.844 slots per deg
     rotationAngle = counter*2.844;
     
     vr = logData(vr,Acol,Bcol, velocity,timestampCol);
-    % count how much time it was on the target speed
-    if((vr.targetSpeed  <= vr.velocity(2) + vr.allowedDeviation) && ...
-            (vr.targetSpeed  >= vr.velocity(2) - vr.allowedDeviation))
-        vr.timeOfRanningInRange = vr.timeOfRanningInRange+vr.ai.NotifyWhenDataAvailableExceeds;
-    else
-        vr.timeOfTotalRun = vr.timeOfTotalRun + vr.ai.NotifyWhenDataAvailableExceeds;
-    end
+
     if (vr.position(2)>=125) 
         velocity(2) = 0;
     end
