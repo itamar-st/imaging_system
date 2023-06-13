@@ -23,6 +23,9 @@ function vr = initializationCodeFun(vr)
     vr.exper.variables.x = '200';
     timeUntilCoolOffRoom = 0;
     vr.counter = 0;
+    vr.timeOfRanningInRange = 0;
+    vr.timeOfTotalRun = 0;
+    vr.precentageOfRunningInRange = 0.7;
     vr = miniGUI(vr); % show the GUI for chosing the experiment preferences 
     vr.currentWorld = vr.chosenWorld; %show the world we chose in the GUI
     

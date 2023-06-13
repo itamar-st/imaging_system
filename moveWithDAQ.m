@@ -30,7 +30,13 @@ function velocity = moveWithDAQ(vr)
     rotationAngle = counter*2.844;
     
     vr = logData(vr,Acol,Bcol, velocity,timestampCol);
- 
+    % count how much time it was on the target speed
+    if((vr.targetSpeed  <= vr.velocity(2) + vr.allowedDeviation) && ...
+            (vr.targetSpeed  >= vr.velocity(2) - vr.allowedDeviation))
+        vr.timeOfRanningInRange = vr.timeOfRanningInRange+vr.ai.NotifyWhenDataAvailableExceeds;
+    else
+        vr.timeOfTotalRun = vr.timeOfTotalRun + vr.ai.NotifyWhenDataAvailableExceeds;
+    end
     if (vr.position(2)>=125) 
         velocity(2) = 0;
     end
