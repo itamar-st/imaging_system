@@ -15,8 +15,9 @@ function vr = endOfTraceProcedure(vr)
         if (timeUntilCoolOffRoom == 1)
             vr.currentWorld = 2;
             start(vr.t2);
-            vr = giveReward(vr);
-
+            if(vr.timeOfRanningInRange/vr.timeOfTotalRun >= vr.precentageOfRunningInRange)
+                vr = giveReward(vr);
+            end
         else
             %go back to init position
             vr.currentWorld = vr.chosenWorld;
