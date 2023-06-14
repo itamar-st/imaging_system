@@ -9,8 +9,10 @@ function vr = freeAlocations(vr)
     % stop the DAQ session
     stop(vr.ai);
     stop(vr.ao);
-    % close the file
+    % close the files
     fclose(vr.fid1);
     fclose(vr.fid2);
+    fclose(vr.fid3);
+    fclose(vr.fid4);
 end
 
