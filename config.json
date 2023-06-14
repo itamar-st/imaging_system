@@ -1,0 +1,12 @@
+{
+  	
+  "db_amount_trials": "15",
+  "db_threshold_open_valve": "70",
+  "db_reward_duration": "100",
+  "db_sound_option": "1",
+  "db_leakport_room_break": "2",
+  "db_black_room_break": "2",
+  "db_sound_deviation_in_range": "15",
+  "db_target_speed": "30",
+  "db_sound_deviation_out_range": "15"
+}
