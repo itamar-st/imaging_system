@@ -27,7 +27,10 @@ function vr = initializationCodeFun(vr)
     vr.timeOfTotalRun = 0;
     %counting amount of finished trials in a session.
     vr.countTrials = 0;
+    
+    vr = createLogFiles(vr); % for logging all files
     vr = miniGUI(vr); % show the GUI for chosing the experiment preferences
+    
     %choose world, return line 27 if you want to control it via GUI and
     %comment lines 29-34
     %vr.currentWorld = vr.chosenWorld; %show the world we chose in the GUI
@@ -40,8 +43,6 @@ function vr = initializationCodeFun(vr)
     
     vr = timerInit(vr); % start the timers for changing rooms
     
-    vr = createLogFiles(vr); % for logging the A-B voltage an velocity
-
     vr = DAQInit(vr); % data acquisition system
 end
 
