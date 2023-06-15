@@ -1,12 +1,10 @@
-function vr = soundInRangeA(vr, requiredVelocity)
-%CALCVELOCITY Summary of this function goes here
-%if (true)
-vr.velocity(2)
-    if (true)
-
-    %if ((requiredVelocity  <= vr.velocity(2) + 10) && (requiredVelocity  >= vr.velocity(2) - 10))
-            %generateSound(vr,1500);
-            soundTest1(vr,1500);
-    end    
+function vr = soundInRangeA(vr, requiredVelocity, allowedDeviation, desiredFreq)   
+    if (vr.position(2)>=vr.endOftheRoad) %if we reach to the end of the hallway
+        vr = stopSound(vr);
+    elseif ((requiredVelocity  <= vr.velocity(2) + allowedDeviation) && (requiredVelocity  >= vr.velocity(2) - allowedDeviation))
+        vr = generateSound(vr,desiredFreq);
+    else
+        vr = stopSound(vr);
+    end
 end
 
