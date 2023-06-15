@@ -19,7 +19,7 @@ function vr = initializationCodeFun(vr)
     global timeUntilCoolOffRoom;
     
     %vr.trackLength = eval(vr.exper.variables.trackLength)
-    vr.exper.variables.x = '200';
+%     vr.exper.variables.x = '200';
     timeUntilCoolOffRoom = 0;
     vr.counter = 0;
     
@@ -27,7 +27,8 @@ function vr = initializationCodeFun(vr)
     vr.timeOfTotalRun = 0;
     %counting amount of finished trials in a session.
     vr.countTrials = 0;
-    
+    vr.endOftheRoad = 220;
+    vr.isRewardGiven = 0;
     vr = createLogFiles(vr); % for logging all files
     vr = miniGUI(vr); % show the GUI for chosing the experiment preferences
     
@@ -69,11 +70,13 @@ function vr = runtimeCodeFun(vr)
             (vr.targetSpeed  >= vr.velocity(2) - vr.allowedDeviation))
         vr.timeOfRanningInRange = vr.timeOfRanningInRange+vr.ai.NotifyWhenDataAvailableExceeds;
     end
-    vr.timeOfTotalRun = vr.timeOfTotalRun + vr.ai.NotifyWhenDataAvailableExceeds;
     
     %checking position for reward
-    if (vr.position(2)>=125)
+    if (vr.position(2)>=vr.endOftheRoad)
         vr = endOfTraceProcedure(vr);
+    else
+        % count the time on trace before reaching to the end
+        vr.timeOfTotalRun = vr.timeOfTotalRun + vr.ai.NotifyWhenDataAvailableExceeds;
     end
     
 end
