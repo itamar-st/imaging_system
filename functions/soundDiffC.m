@@ -6,7 +6,7 @@ function vr = soundDiffC(vr, requiredVelocity,allowedDeviation,DeviationBetweenS
     borderR = requiredVelocity + scale;
     borderL = requiredVelocity - scale;
     velocity1 = vr.velocity(2);
-    if (vr.position(2)>=125) %if we reach to the end of the hallway
+    if (vr.position(2)>=vr.endOftheRoad) %if we reach to the end of the hallway
         vr = stopSound(vr);
         
     elseif ((velocity1 <= requiredVelocity + scale) && (velocity1 >= requiredVelocity - scale))

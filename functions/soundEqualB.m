@@ -7,7 +7,7 @@ function vr = soundEqualB(vr, requiredVelocity, allowedDeviationInrange, Deviati
      disp("this is "+vr.DeviationBetweenSteps);
     borderR = requiredVelocity + scale;
     borderL = requiredVelocity - scale;
-    if (vr.position(2)>=125) %if we reach to the end of the hallway
+    if (vr.position(2)>=vr.endOftheRoad) %if we reach to the end of the hallway
         vr = stopSound(vr);
         
     elseif ((velocity1 <= requiredVelocity + scale) && (velocity1 >= requiredVelocity - scale))

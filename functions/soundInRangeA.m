@@ -1,5 +1,5 @@
 function vr = soundInRangeA(vr, requiredVelocity, allowedDeviation, desiredFreq)   
-    if (vr.position(2)>=125) %if we reach to the end of the hallway
+    if (vr.position(2)>=vr.endOftheRoad) %if we reach to the end of the hallway
         vr = stopSound(vr);
     elseif ((requiredVelocity  <= vr.velocity(2) + allowedDeviation) && (requiredVelocity  >= vr.velocity(2) - allowedDeviation))
         vr = generateSound(vr,desiredFreq);
