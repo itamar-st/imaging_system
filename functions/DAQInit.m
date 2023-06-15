@@ -10,7 +10,7 @@ function vr = DAQInit(vr)
     vr.ao = daq.createSession('ni');
     vr.ao.IsContinuous = true;
     
-    addAnalogInputChannel(vr.ai,'Dev1',[8,9,11],'Voltage');
+    addAnalogInputChannel(vr.ai,'Dev1',[8,9,10],'Voltage');
     addAnalogOutputChannel(vr.ao,'Dev1',1,'Voltage');
     % define the sampling rate to 1kHz and set the duration to be unlimited
     vr.ai.Rate = vr.rate;
@@ -25,7 +25,6 @@ function vr = DAQInit(vr)
 
     vr.timeOfSample = vr.ai.Rate./vr.ai.NotifyWhenDataAvailableExceeds;
     vr.timePerSample = vr.ai.NotifyWhenDataAvailableExceeds./vr.ai.Rate;
-    %radius of 9.525 cm for the wheel.
     vr.lh1 = addlistener(vr.ai,'DataAvailable',@getData);
     function getData(src,event)
         dataFromDAQ = [event.Data event.TimeStamps];
